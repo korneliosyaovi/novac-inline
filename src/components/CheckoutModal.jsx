@@ -12,6 +12,7 @@ const CheckoutModal = ({ config, onClose }) => {
   const [activeTab, setActiveTab] = useState('card');
   const [isProcessing, setIsProcessing] = useState(false);
   const [initialResponse, setInitialResponse] = useState(null);
+  // const [startVerifying, setStartVerifying] = useState(false);
 
   const tabs = [];
   
