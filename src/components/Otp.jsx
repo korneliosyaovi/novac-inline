@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import { validateOtp } from '../utils/api';
 
-const Otp = ({ config, onSuccess, onError,  isProcessing, setIsProcessing }) => {
+const Otp = ({ config, onSuccess, onError }) => {
 
     const [formData, setFormData] = useState({
         otp: '',
     });
     const [errors, setErrors] = useState({});
+    const [isProcessing, setIsProcessing] = useState(false);
 
     const validateForm = () => {
         const newErrors = {};
 
         if (!formData.otp.trim()) {
-            newErrors.cardholderName = 'OTP is required';
+            newErrors.otp = 'OTP is required';
         }
 
         // TODO: confirm if there are any other validations for OTP
@@ -61,12 +62,12 @@ const Otp = ({ config, onSuccess, onError,  isProcessing, setIsProcessing }) => 
         <form className="novac-payment-form" onSubmit={handleSubmit}>
             <div className="novac-form-group">
                 <label htmlFor="cardholderName" className="novac-label">
-                    Cardholder Name
+                    Otp
                 </label>
                 <input
                     type="text"
-                    id="cardholderName"
-                    name="cardholderName"
+                    id="otp"
+                    name="otp"
                     className={`novac-input ${errors.otp ? 'error' : ''}`}
                     value={formData.otp}
                     onChange={handleInputChange}

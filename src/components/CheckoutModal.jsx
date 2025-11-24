@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import CardPayment from './CardPayment';
 import Otp from './Otp';
 import BankTransfer from './BankTransfer';
 import UssdPayment from './UssdPayment';
 import { formatAmount } from '../utils/helpers';
+import {generateTransactionId, initiatePaymentRequest} from "../utils/api";
+import {toast, Toaster} from "react-hot-toast";
 
 // https://www.app.novacpayment.com/_next/static/media/loader.07fd30ec.gif
 
 const CheckoutModal = ({ config, onClose }) => {
   const [activeTab, setActiveTab] = useState('card');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [initialResponse, setInitialResponse] = useState(null);
 
   const tabs = [];
   
@@ -40,8 +43,31 @@ const CheckoutModal = ({ config, onClose }) => {
     }
   };
 
+  useEffect(async () => {
+    const full_name = (config.customerName || '').split(' ');
+    const initiateResponse = await initiatePaymentRequest({
+      publicKey: config.publicKey,
+      transactionReference: config.reference || generateTransactionId(),
+      amount: config.amount,
+      currency: config.currency,
+      checkoutCustomerData: {
+        email: config.email,
+        firstName: full_name[0] || 'Anonymous',
+        lastName: full_name[1] || 'Anonymous',
+        phoneNumber: config.customerPhone || ''
+      },
+      checkoutCustomizationData: {
+        logoUrl: config.customization?.logoUrl || '',
+        checkoutModalTitle: config.customization?.title || 'Novac Payment',
+        paymentDescription: config.customization?.description || 'Complete your payment securely'
+      }
+    });
+    setInitialResponse(initiateResponse);
+  }, [config]);
+
   return (
     <div className="novac-modal-overlay" onClick={handleOverlayClick}>
+      <div><Toaster position="top-right" /></div>
       <div className="novac-modal">
         <div className="novac-modal-header">
           <div className="novac-header-content">
@@ -87,6 +113,7 @@ const CheckoutModal = ({ config, onClose }) => {
               onError={handlePaymentError}
               isProcessing={isProcessing}
               setIsProcessing={setIsProcessing}
+              initialResponse={initialResponse}
             />
           )}
           {activeTab === 'bank_transfer' && (
@@ -96,6 +123,7 @@ const CheckoutModal = ({ config, onClose }) => {
               onError={handlePaymentError}
               isProcessing={isProcessing}
               setIsProcessing={setIsProcessing}
+              initialResponse={initialResponse}
             />
           )}
           {activeTab === 'ussd' && (
@@ -105,6 +133,7 @@ const CheckoutModal = ({ config, onClose }) => {
               onError={handlePaymentError}
               isProcessing={isProcessing}
               setIsProcessing={setIsProcessing}
+              initialResponse={initialResponse}
             />
           )}
         </div>

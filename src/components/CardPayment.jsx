@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { makePaymentRequest } from '../utils/api';
 import { validateCardNumber, validateCVV, validateExpiry } from '../utils/validation';
 import Pin from "./Pin";
+import Otp from "./Otp";
+import {toast} from "react-hot-toast";
 
-const CardPayment = ({ config, onSuccess, onError, isProcessing, setIsProcessing }) => {
+const CardPayment = ({ config, onSuccess, onError, isProcessing, setIsProcessing, initialResponse }) => {
   const [formData, setFormData] = useState({
     cardNumber: '',
     expiryDate: '',
@@ -12,10 +14,11 @@ const CardPayment = ({ config, onSuccess, onError, isProcessing, setIsProcessing
     cardPin: ''
   });
 
-  // const [authMode, setAuthMode] = useState('PIN');
+  // const [authMode, setAuthMode] = useState('pin');
 
   const [errors, setErrors] = useState({});
   const [showPin, setShowPin] = useState(false);
+  const [showOtp, setShowOtp] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -114,9 +117,28 @@ const CardPayment = ({ config, onSuccess, onError, isProcessing, setIsProcessing
         metadata: config.metadata
       };
 
-      const response = await makePaymentRequest(payload);
-      onSuccess(response);
+      const { data } = await makePaymentRequest(payload, initialResponse);
+      const { authMode } = data;
+      console.log("Payment Response:", data);
+
+      if (authMode === 'otp') {
+        setShowOtp(true);
+        setShowPin(false);
+        setIsProcessing(false);
+        return;
+      }
+
+      if (authMode === 'pin') {
+        setShowOtp(false);
+        setShowPin(true);
+        setIsProcessing(false);
+        return;
+      }
+
+      setShowOtp(true);
+      // onSuccess(response);
     } catch (error) {
+      toast.error(error.message || 'Payment failed. Please try again.');
       onError({
         message: error.message || 'Payment failed. Please try again.',
         type: 'card_error'
@@ -126,10 +148,10 @@ const CardPayment = ({ config, onSuccess, onError, isProcessing, setIsProcessing
 
   return (
     <>
-    {showPin && (
+    {showPin && !showOtp && (
       <Pin formData={formData} setFormData={setFormData} handleSubmit={handleSubmit} />
     )}
-    {!showPin && (
+    {!showPin && !showOtp && (
         <form className="novac-payment-form" onSubmit={proceedToPinCollection}>
           <div className="novac-form-group">
             <label htmlFor="cardholderName" className="novac-label">
@@ -224,7 +246,13 @@ const CardPayment = ({ config, onSuccess, onError, isProcessing, setIsProcessing
             {isProcessing ? 'Processing...' : 'Pay Now'}
           </button>
         </form>
-    )}</>
+    )}
+
+      {showOtp && (
+          <Otp config={config} onSuccess={onSuccess} onError={onError} isProcessing={isProcessing} setIsProcessing={setIsProcessing} />
+      )}
+
+    </>
   );
 };
 

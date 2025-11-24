@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { makePaymentRequest } from '../utils/api';
+import {toast} from "react-hot-toast";
 
-const BankTransfer = ({ config, onSuccess, onError, isProcessing, setIsProcessing }) => {
-  const [transferDetails, setTransferDetails] = useState(null);
+const BankTransfer = ({ config, onSuccess, onError, isProcessing, setIsProcessing, initialResponse }) => {
+  const [transferDetails, setTransferDetails] = useState(sessionStorage.getItem('novac-transfer-details') ? JSON.parse(sessionStorage.getItem('novac-transfer-details')) : null);
   const [copied, setCopied] = useState(false);
 
   const initiateBankTransfer = useCallback(async () => {
@@ -22,13 +23,16 @@ const BankTransfer = ({ config, onSuccess, onError, isProcessing, setIsProcessin
         customerPhone: config.customerPhone,
       };
 
-      const response = await makePaymentRequest(payload);
+      const response = await makePaymentRequest(payload, initialResponse);
 
-      console.log('Bank Transfer Response:', response);
+      sessionStorage.setItem('novac-transfer-details', JSON.stringify({
+        accountNumber: response.accountNumber || '0123456789',
+        accountName: response.accountName || 'Novac Payment Limited',
+        bankName: response.bankName || 'Access Bank',
+        amount: config.amount,
+        reference: config.reference
+      }));
 
-
-      
-      // Simulate bank transfer details from API response
       setTransferDetails({
         accountNumber: response.accountNumber || '0123456789',
         accountName: response.accountName || 'Novac Payment Limited',
@@ -40,6 +44,7 @@ const BankTransfer = ({ config, onSuccess, onError, isProcessing, setIsProcessin
       setIsProcessing(false);
     } catch (error) {
       setIsProcessing(false);
+      toast.error(error.message || 'Failed to generate transfer details');
       onError({
         message: error.message || 'Failed to generate transfer details',
         type: 'bank_transfer_error'

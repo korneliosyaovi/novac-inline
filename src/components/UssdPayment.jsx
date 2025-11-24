@@ -1,26 +1,79 @@
-import React, { useState } from 'react';
-import { makePaymentRequest } from '../utils/api';
+import React, {useEffect, useState} from 'react';
+import {getUssdBanks, makePaymentRequest} from '../utils/api';
+import {toast} from "react-hot-toast";
 
-const UssdPayment = ({ config, onSuccess, onError, isProcessing, setIsProcessing }) => {
+const UssdPayment = ({ config, onSuccess, onError, isProcessing, setIsProcessing, initialResponse }) => {
   const [selectedBank, setSelectedBank] = useState('');
   const [ussdCode, setUssdCode] = useState('');
   const [showCode, setShowCode] = useState(false);
+  const [banks, setBanks] = useState(sessionStorage.getItem('novac-ussd-banks') ? JSON.parse(sessionStorage.getItem('novac-ussd-banks')) :[]);
+  const [banksLoading, setBanksLoading] = useState(false);
+  const [banksError, setBanksError] = useState('');
 
-  const banks = [
-    { id: 'gtb', name: 'GTBank', ussdCode: '*737*' },
-    { id: 'access', name: 'Access Bank', ussdCode: '*901*' },
-    { id: 'zenith', name: 'Zenith Bank', ussdCode: '*966*' },
-    { id: 'uba', name: 'UBA', ussdCode: '*919*' },
-    { id: 'first', name: 'First Bank', ussdCode: '*894*' },
-    { id: 'fidelity', name: 'Fidelity Bank', ussdCode: '*770*' },
-    { id: 'sterling', name: 'Sterling Bank', ussdCode: '*822*' },
-    { id: 'unity', name: 'Unity Bank', ussdCode: '*7799*' },
-    { id: 'wema', name: 'Wema Bank', ussdCode: '*945*' },
-    { id: 'polaris', name: 'Polaris Bank', ussdCode: '*833*' }
-  ];
+  // Fetch banks when publicKey becomes available
+  useEffect(() => {
+    let mounted = true;
+    const loadBanks = async () => {
+      setBanksError('');
+      if (!config || !config.publicKey) return;
+      setBanksLoading(true);
+      try {
+        const res = await getUssdBanks(config.publicKey);
+
+        // API may return different shapes: array, { data: [...] }, { banks: [...] }, { data: { banks: [...] } }
+        // Also handle res.data.bankDetails which is the shape you provided
+        let list = [];
+        if (Array.isArray(res)) {
+          list = res;
+        } else if (Array.isArray(res?.data?.bankDetails)) {
+          list = res.data.bankDetails;
+        } else if (Array.isArray(res?.data)) {
+          list = res.data;
+        } else if (Array.isArray(res?.data?.banks)) {
+          list = res.data.banks;
+        } else if (Array.isArray(res?.banks)) {
+          list = res.banks;
+        } else if (res && typeof res === 'object') {
+          // try to find an array value inside the object (one level deep)
+          const possible = Object.values(res).find(v => Array.isArray(v));
+          if (Array.isArray(possible)) list = possible;
+          // also try nested data object
+          if (!list.length && res.data && typeof res.data === 'object') {
+            const nested = Object.values(res.data).find(v => Array.isArray(v));
+            if (Array.isArray(nested)) list = nested;
+          }
+        }
+
+        // Normalize each bank to { key, name, ussd }
+        const normalized = (list || []).map((b, idx) => ({
+          key: String(b?.bank_code ?? b?.bankCode ?? b?.code ?? b?.id ?? b?.slug ?? b?.name ?? idx),
+          name: String(b?.bank_name ?? b?.bankName ?? b?.name ?? b?.label ?? `Bank ${idx + 1}`),
+          ussd: String(b?.ussd_string ?? b?.ussdCode ?? b?.ussd_code ?? b?.ussd ?? b?.ussdPrefix ?? '')
+        }));
+
+        if (mounted) {
+          sessionStorage.setItem('novac-ussd-banks', JSON.stringify(normalized));
+          setBanks(normalized);
+        }
+      } catch (err) {
+        if (mounted) setBanks([]);
+        setBanksError(err?.message || 'Failed to load banks');
+        if (onError) onError({ message: err.message || 'Failed to load banks', type: 'fetch_banks' });
+      } finally {
+        if (mounted) setBanksLoading(false);
+      }
+    };
+
+    loadBanks();
+    return () => { mounted = false; };
+  }, [config?.publicKey]);
 
   const handleBankSelect = async (bank) => {
-    setSelectedBank(bank.id);
+    // bank is already normalized: { key, name, ussd }
+    const bankCode = bank?.key;
+    const ussdPrefix = bank?.ussd ?? '';
+
+    setSelectedBank(bankCode);
     setIsProcessing(true);
 
     try {
@@ -31,20 +84,33 @@ const UssdPayment = ({ config, onSuccess, onError, isProcessing, setIsProcessing
         currency: config.currency,
         reference: config.reference,
         paymentMethod: 'ussd',
-        bankCode: bank.id,
+        bankCode: bankCode,
         metadata: config.metadata
       };
 
-      const response = await makePaymentRequest(payload);
-      
-      // Generate USSD code
-      const code = `${bank.ussdCode}${response.paymentCode || '000'}*${config.amount}#`;
+      const response = await makePaymentRequest(payload, initialResponse);
+
+      // Generate USSD code (handle different property names safely)
+      const paymentCode = response?.paymentCode ?? response?.data?.paymentCode ?? response?.payment_code ?? response?.code ?? '';
+
+      // If the bank provided a full ussd string (e.g. '*123*1#'), use it as-is.
+      // If the ussd string contains a placeholder like {amount}, replace it.
+      // Otherwise, compose using prefix + paymentCode + amount.
+      let code;
+      if (ussdPrefix && ussdPrefix.includes('{amount}')) {
+        code = ussdPrefix.replace('{amount}', String(config.amount));
+      } else if (ussdPrefix && ussdPrefix.includes('#')) {
+        code = ussdPrefix;
+      } else {
+        code = `${ussdPrefix}${paymentCode || '000'}*${config.amount}#`;
+      }
       setUssdCode(code);
       setShowCode(true);
       setIsProcessing(false);
     } catch (error) {
       setIsProcessing(false);
-      onError({
+      toast.error(error.message || 'Failed to generate USSD code');
+      if (onError) onError({
         message: error.message || 'Failed to generate USSD code',
         type: 'ussd_error'
       });
@@ -134,19 +200,36 @@ const UssdPayment = ({ config, onSuccess, onError, isProcessing, setIsProcessing
         </p>
       </div>
 
-      <div className="novac-bank-list">
-        {banks.map(bank => (
-          <button
-            key={bank.id}
-            className={`novac-bank-item ${selectedBank === bank.id ? 'selected' : ''}`}
-            onClick={() => handleBankSelect(bank)}
-            disabled={isProcessing}
-          >
-            <span className="novac-bank-icon">🏦</span>
-            <span className="novac-bank-name">{bank.name}</span>
-          </button>
-        ))}
-      </div>
+      {banksLoading ? (
+        <div className="novac-loading">
+          <div className="novac-spinner"></div>
+          <p>Loading banks...</p>
+        </div>
+      ) : banksError ? (
+        <div className="novac-warning-box">
+          <p className="novac-warning-text">{banksError}</p>
+        </div>
+      ) : banks.length === 0 ? (
+        <div className="novac-info-box">
+          <p className="novac-info-text">No USSD banks available for this merchant.</p>
+        </div>
+      ) : (
+        <div className="novac-bank-list">
+          {banks.map(bank => {
+            return (
+              <button
+                key={bank.key}
+                className={`novac-bank-item ${selectedBank === bank.key ? 'selected' : ''}`}
+                onClick={() => handleBankSelect(bank)}
+                disabled={isProcessing}
+              >
+                <span className="novac-bank-icon">🏦</span>
+                <span className="novac-bank-name">{bank.name}</span>
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       {isProcessing && (
         <div className="novac-loading">

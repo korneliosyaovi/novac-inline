@@ -76,7 +76,7 @@ export const initiatePaymentRequest = async (payload) => {
 export const validateOtp = async (payload) => {
   const { publicKey, reference, otp } = payload;
   return request({
-    path: '/validate-otp',
+    path: '/card/validate-otp',
     method: 'POST',
     body: { reference, otp },
     publicKey
@@ -146,7 +146,7 @@ export const getTransactionFee = async (payload) => {
 
 /* --- High level flows --- */
 
-export const makePaymentRequest = async (payload) => {
+export const makePaymentRequest = async (payload, initiateResponse) => {
   try {
     if (!payload.publicKey) throw new Error('Public key is required');
     if (!payload.email) throw new Error('Email is required');
@@ -181,25 +181,6 @@ export const makePaymentRequest = async (payload) => {
       };
       return responses[payload.paymentMethod] || responses.card;
     }
-
-    const full_name = (payload.customerName || '').split(' ');
-    const initiateResponse = await initiatePaymentRequest({
-      publicKey: payload.publicKey,
-      transactionReference: payload.reference || generateTransactionId(),
-      amount: payload.amount,
-      currency: payload.currency,
-      checkoutCustomerData: {
-        email: payload.email,
-        firstName: full_name[0] || 'Anonymous',
-        lastName: full_name[1] || 'Anonymous',
-        phoneNumber: payload.customerPhone || ''
-      },
-      checkoutCustomizationData: {
-        logoUrl: payload.customization?.logoUrl || '',
-        checkoutModalTitle: payload.customization?.title || 'Novac Payment',
-        paymentDescription: payload.customization?.description || 'Complete your payment securely'
-      }
-    });
 
     let response;
 
