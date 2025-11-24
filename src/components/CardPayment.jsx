@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
 import { makePaymentRequest } from '../utils/api';
 import { validateCardNumber, validateCVV, validateExpiry } from '../utils/validation';
+import Pin from "./Pin";
 
 const CardPayment = ({ config, onSuccess, onError, isProcessing, setIsProcessing }) => {
   const [formData, setFormData] = useState({
     cardNumber: '',
     expiryDate: '',
     cvv: '',
-    cardholderName: ''
+    cardholderName: '',
+    cardPin: ''
   });
 
+  // const [authMode, setAuthMode] = useState('PIN');
+
   const [errors, setErrors] = useState({});
+  const [showPin, setShowPin] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -69,6 +74,15 @@ const CardPayment = ({ config, onSuccess, onError, isProcessing, setIsProcessing
     return Object.keys(newErrors).length === 0;
   };
 
+  const proceedToPinCollection = (e) => {
+    e.preventDefault();
+    if (!validateForm()) {
+      return;
+    }
+
+    setShowPin(true);
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -92,8 +106,9 @@ const CardPayment = ({ config, onSuccess, onError, isProcessing, setIsProcessing
         cardDetails: {
           cardNumber,
           expiryMonth,
-          expiryYear: `20${expiryYear}`,
+          expiryYear: `${expiryYear}`,
           cvv: formData.cvv,
+          cardPin: formData.cardPin,
           cardholderName: formData.cardholderName
         },
         metadata: config.metadata
@@ -110,100 +125,106 @@ const CardPayment = ({ config, onSuccess, onError, isProcessing, setIsProcessing
   };
 
   return (
-    <form className="novac-payment-form" onSubmit={handleSubmit}>
-      <div className="novac-form-group">
-        <label htmlFor="cardholderName" className="novac-label">
-          Cardholder Name
-        </label>
-        <input
-          type="text"
-          id="cardholderName"
-          name="cardholderName"
-          className={`novac-input ${errors.cardholderName ? 'error' : ''}`}
-          value={formData.cardholderName}
-          onChange={handleInputChange}
-          placeholder="John Doe"
-          disabled={isProcessing}
-          autoComplete="cc-name"
-        />
-        {errors.cardholderName && (
-          <span className="novac-error-text">{errors.cardholderName}</span>
-        )}
-      </div>
+    <>
+    {showPin && (
+      <Pin formData={formData} setFormData={setFormData} handleSubmit={handleSubmit} />
+    )}
+    {!showPin && (
+        <form className="novac-payment-form" onSubmit={proceedToPinCollection}>
+          <div className="novac-form-group">
+            <label htmlFor="cardholderName" className="novac-label">
+              Cardholder Name
+            </label>
+            <input
+                type="text"
+                id="cardholderName"
+                name="cardholderName"
+                className={`novac-input ${errors.cardholderName ? 'error' : ''}`}
+                value={formData.cardholderName}
+                onChange={handleInputChange}
+                placeholder="John Doe"
+                disabled={isProcessing}
+                autoComplete="cc-name"
+            />
+            {errors.cardholderName && (
+                <span className="novac-error-text">{errors.cardholderName}</span>
+            )}
+          </div>
 
-      <div className="novac-form-group">
-        <label htmlFor="cardNumber" className="novac-label">
-          Card Number
-        </label>
-        <input
-          type="text"
-          id="cardNumber"
-          name="cardNumber"
-          className={`novac-input ${errors.cardNumber ? 'error' : ''}`}
-          value={formData.cardNumber}
-          onChange={handleInputChange}
-          placeholder="1234 5678 9012 3456"
-          maxLength="19"
-          disabled={isProcessing}
-          autoComplete="cc-number"
-        />
-        {errors.cardNumber && (
-          <span className="novac-error-text">{errors.cardNumber}</span>
-        )}
-      </div>
+          <div className="novac-form-group">
+            <label htmlFor="cardNumber" className="novac-label">
+              Card Number
+            </label>
+            <input
+                type="text"
+                id="cardNumber"
+                name="cardNumber"
+                className={`novac-input ${errors.cardNumber ? 'error' : ''}`}
+                value={formData.cardNumber}
+                onChange={handleInputChange}
+                placeholder="1234 5678 9012 3456"
+                maxLength="19"
+                disabled={isProcessing}
+                autoComplete="cc-number"
+            />
+            {errors.cardNumber && (
+                <span className="novac-error-text">{errors.cardNumber}</span>
+            )}
+          </div>
 
-      <div className="novac-form-row">
-        <div className="novac-form-group">
-          <label htmlFor="expiryDate" className="novac-label">
-            Expiry Date
-          </label>
-          <input
-            type="text"
-            id="expiryDate"
-            name="expiryDate"
-            className={`novac-input ${errors.expiryDate ? 'error' : ''}`}
-            value={formData.expiryDate}
-            onChange={handleInputChange}
-            placeholder="MM/YY"
-            maxLength="5"
-            disabled={isProcessing}
-            autoComplete="cc-exp"
-          />
-          {errors.expiryDate && (
-            <span className="novac-error-text">{errors.expiryDate}</span>
-          )}
-        </div>
+          <div className="novac-form-row">
+            <div className="novac-form-group">
+              <label htmlFor="expiryDate" className="novac-label">
+                Expiry Date
+              </label>
+              <input
+                  type="text"
+                  id="expiryDate"
+                  name="expiryDate"
+                  className={`novac-input ${errors.expiryDate ? 'error' : ''}`}
+                  value={formData.expiryDate}
+                  onChange={handleInputChange}
+                  placeholder="MM/YY"
+                  maxLength="5"
+                  disabled={isProcessing}
+                  autoComplete="cc-exp"
+              />
+              {errors.expiryDate && (
+                  <span className="novac-error-text">{errors.expiryDate}</span>
+              )}
+            </div>
 
-        <div className="novac-form-group">
-          <label htmlFor="cvv" className="novac-label">
-            CVV
-          </label>
-          <input
-            type="text"
-            id="cvv"
-            name="cvv"
-            className={`novac-input ${errors.cvv ? 'error' : ''}`}
-            value={formData.cvv}
-            onChange={handleInputChange}
-            placeholder="123"
-            maxLength="4"
-            disabled={isProcessing}
-            autoComplete="cc-csc"
-          />
-          {errors.cvv && (
-            <span className="novac-error-text">{errors.cvv}</span>
-          )}
-        </div>
-      </div>
+            <div className="novac-form-group">
+              <label htmlFor="cvv" className="novac-label">
+                CVV
+              </label>
+              <input
+                  type="text"
+                  id="cvv"
+                  name="cvv"
+                  className={`novac-input ${errors.cvv ? 'error' : ''}`}
+                  value={formData.cvv}
+                  onChange={handleInputChange}
+                  placeholder="123"
+                  maxLength="4"
+                  disabled={isProcessing}
+                  autoComplete="cc-csc"
+              />
+              {errors.cvv && (
+                  <span className="novac-error-text">{errors.cvv}</span>
+              )}
+            </div>
+          </div>
 
-      <button
-        type="submit"
-        className="novac-submit-btn"
-        disabled={isProcessing}
-      >
-        {isProcessing ? 'Processing...' : 'Pay Now'}
-      </button>
-    </form>
+          <button
+              type="submit"
+              className="novac-submit-btn"
+              disabled={isProcessing}
+          >
+            {isProcessing ? 'Processing...' : 'Pay Now'}
+          </button>
+        </form>
+    )}</>
   );
 };
 

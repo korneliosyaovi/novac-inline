@@ -23,7 +23,7 @@ class NovacInline {
       throw new Error('Configuration is required');
     }
 
-    const required = ['publicKey', 'email', 'amount'];
+    const required = ['publicKey', 'email', 'amount', 'customerName', 'customization'];
     const missing = required.filter(field => !config[field]);
     
     if (missing.length > 0) {

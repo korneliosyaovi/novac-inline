@@ -179,7 +179,7 @@
     document.getElementById('payButton').addEventListener('click', function() {
       // Create new payment instance
       const payment = new NovacInline({
-        publicKey: 'pk_test_your_public_key_here', // Replace with your public key
+        publicKey: 'nc_testpk_akf34p2rjegw6fn4fkvw275u5lkb5dxrc3ni',
         email: 'customer@example.com',
         amount: 15000,
         currency: 'NGN',
@@ -194,6 +194,12 @@
         metadata: {
           productId: '12345',
           productName: 'Sample Product'
+        },
+
+        customization: {
+          title: 'Complete Your Payment',
+          description: 'Pay ₦15,000 for Sample Product',
+          logo: 'https://example.com/logo.png'
         },
 
         // Callback when payment is successful

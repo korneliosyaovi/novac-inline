@@ -10,16 +10,23 @@ const BankTransfer = ({ config, onSuccess, onError, isProcessing, setIsProcessin
 
     try {
       const payload = {
+        ...config,
         publicKey: config.publicKey,
         email: config.email,
         amount: config.amount,
         currency: config.currency,
         reference: config.reference,
         paymentMethod: 'bank_transfer',
-        metadata: config.metadata
+        metadata: config.metadata,
+        customerName: config.customerName,
+        customerPhone: config.customerPhone,
       };
 
       const response = await makePaymentRequest(payload);
+
+      console.log('Bank Transfer Response:', response);
+
+
       
       // Simulate bank transfer details from API response
       setTransferDetails({
@@ -42,7 +49,7 @@ const BankTransfer = ({ config, onSuccess, onError, isProcessing, setIsProcessin
 
   useEffect(() => {
     initiateBankTransfer();
-  }, [initiateBankTransfer]);
+  }, []);
 
   const copyToClipboard = (text, field) => {
     navigator.clipboard.writeText(text)

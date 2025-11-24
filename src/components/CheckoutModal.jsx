@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import CardPayment from './CardPayment';
+import Otp from './Otp';
 import BankTransfer from './BankTransfer';
 import UssdPayment from './UssdPayment';
 import { formatAmount } from '../utils/helpers';
+
+// https://www.app.novacpayment.com/_next/static/media/loader.07fd30ec.gif
 
 const CheckoutModal = ({ config, onClose }) => {
   const [activeTab, setActiveTab] = useState('card');

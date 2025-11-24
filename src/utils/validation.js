@@ -6,35 +6,18 @@
  * Validate credit card number using Luhn algorithm
  */
 export const validateCardNumber = (cardNumber) => {
-  // Remove spaces and dashes
-  const cleanNumber = cardNumber.replace(/[\s-]/g, '');
+  const clean = cardNumber.replace(/\D/g, '');
+  if (clean.length < 13 || clean.length > 19) return false;
 
-  // Check if it contains only digits
-  if (!/^\d+$/.test(cleanNumber)) {
-    return false;
-  }
+  let sum = 0, double = false;
 
-  // Check length (13-19 digits)
-  if (cleanNumber.length < 13 || cleanNumber.length > 19) {
-    return false;
-  }
-
-  // Luhn algorithm
-  let sum = 0;
-  let isEven = false;
-
-  for (let i = cleanNumber.length - 1; i >= 0; i--) {
-    let digit = parseInt(cleanNumber[i], 10);
-
-    if (isEven) {
-      digit *= 2;
-      if (digit > 9) {
-        digit -= 9;
-      }
+  for (let i = clean.length - 1; i >= 0; i--) {
+    let d = Number(clean[i]);
+    if (double) {
+      d = d * 2 - (d > 4 ? 9 : 0);
     }
-
-    sum += digit;
-    isEven = !isEven;
+    sum += d;
+    double = !double;
   }
 
   return sum % 10 === 0;
