@@ -70,12 +70,13 @@ const ConfirmTransaction = ({
       }
     };
 
-    const finishWithSuccess = () => {
+    const finishWithSuccess = ( data ) => {
       if (calledSuccessRef.current) return;
       calledSuccessRef.current = true;
       stopAll();
       try {
         onSuccess && onSuccess({
+            data: data,
             reference: reference,
             status: 'success',
             message: 'Payment confirmed successfully'
@@ -98,7 +99,7 @@ const ConfirmTransaction = ({
         const resp = await verifyPayment(reference, publicKey);
         if (!mounted) return;
         if (isPaymentSuccessful(resp)) {
-          finishWithSuccess();
+          finishWithSuccess(resp.data || resp);
         }
       } catch (err) {
         // ignore transient errors - will retry
