@@ -8,7 +8,7 @@ import { createRoot } from 'react-dom/client';
 import CheckoutModal from './components/CheckoutModal';
 import './styles/main.css';
 
-class NovacInline {
+class Novac {
   constructor(config) {
     this.config = this.validateConfig(config);
     this.modalRoot = null;
@@ -49,12 +49,14 @@ class NovacInline {
       currency: config.currency || 'NGN',
       reference: config.reference || this.generateReference(),
       customerName: config.customerName ? this.sanitize(config.customerName) : '',
+      redirectUrl: config.redirectUrl || '',
       customerPhone: config.customerPhone ? this.sanitize(config.customerPhone) : '',
       metadata: config.metadata || {},
       onSuccess: config.onSuccess || (() => {}),
       onError: config.onError || (() => {}),
       onClose: config.onClose || (() => {}),
-      paymentMethods: config.paymentMethods || ['card', 'bank_transfer', 'ussd']
+      paymentMethods: config.paymentMethods || ['card', 'bank_transfer', 'ussd'],
+      customization: config.customization || {}
     };
   }
 
@@ -129,11 +131,11 @@ class NovacInline {
 
 // Export for different module systems
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = NovacInline;
+  module.exports = Novac;
 }
 
 if (typeof window !== 'undefined') {
-  window.NovacInline = NovacInline;
+  window.Novac = Novac;
 }
 
-export default NovacInline;
+export default Novac;

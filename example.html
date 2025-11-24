@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://api.novacpayment.com; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://api.novacpayment.com; img-src 'self' https://api.novacpayment.com https://*.novacpayment.com;; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
   <title>Novac Inline Payment - Example</title>
   <style>
     * {
@@ -144,7 +144,7 @@
 
     <div class="product-info">
       <div class="product-title">Sample Product</div>
-      <div class="product-price">₦15,000</div>
+      <div class="product-price">₦500.00</div>
     </div>
 
     <button class="pay-btn" id="payButton">Pay with Novac</button>
@@ -181,12 +181,12 @@
       const payment = new NovacInline({
         publicKey: 'nc_testpk_akf34p2rjegw6fn4fkvw275u5lkb5dxrc3ni',
         email: 'customer@example.com',
-        amount: 3000,
+        amount: 500,
         currency: 'NGN',
         customerName: 'John Doe',
         customerPhone: '+2348012345678',
         reference: 'TXN_' + Date.now(),
-        
+        redirectUrl: 'https://example.com/payment-success',
         // Optional: Specify which payment methods to show
         paymentMethods: ['card', 'bank_transfer', 'ussd'],
         
@@ -199,7 +199,9 @@
         customization: {
           title: 'Complete Your Payment',
           description: 'Pay ₦15,000 for Sample Product',
-          logo: 'https://example.com/logo.png'
+          logo: 'https://placehold.co/600x400/orange/white?text=%22%22',
+          // background: '#d42409',
+          // color: '#ffffff'
         },
 
         // Callback when payment is successful

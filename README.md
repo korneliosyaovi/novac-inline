@@ -63,7 +63,7 @@ Download `dist/novac-inline.js` and include it in your HTML:
   <script src="dist/novac-inline.js"></script>
   <script>
     document.getElementById('payButton').addEventListener('click', function() {
-      const payment = new NovacInline({
+      const payment = new Novac({
         publicKey: 'pk_test_your_public_key',
         email: 'customer@example.com',
         amount: 15000,
@@ -107,7 +107,9 @@ Download `dist/novac-inline.js` and include it in your HTML:
 | `reference` | string | Auto-generated | Unique transaction reference |
 | `customerName` | string | `''` | Customer's full name |
 | `customerPhone` | string | `''` | Customer's phone number |
+| `redirectUrl` | string | `''` | Redirect Url |
 | `metadata` | object | `{}` | Custom data to attach to transaction |
+| `customization` | object | `{}` | Customization options (e.g., title, description, logo) |
 | `paymentMethods` | array | `['card', 'bank_transfer', 'ussd']` | Available payment methods |
 | `onSuccess` | function | `() => {}` | Callback when payment succeeds |
 | `onError` | function | `() => {}` | Callback when payment fails |
