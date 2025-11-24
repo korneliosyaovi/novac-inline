@@ -67,20 +67,20 @@ const CheckoutModal = ({ config, onClose }) => {
   return (
     <div className="novac-modal-overlay" onClick={handleOverlayClick}>
       <div><Toaster position="top-right" /></div>
-      <div className="novac-modal">
-        {/* Test Environment Banner */}
-        <div className="novac-test-banner">
-          <span className="novac-test-banner-icon">⚠️</span>
-          <span className="novac-test-banner-text">
+      {/* Test Environment Banner */}
+      <div className="novac-test-banner">
+        <span className="novac-test-banner-icon">⚠️</span>
+        <span className="novac-test-banner-text">
             You are currently in test environment, all transactions are for testing purposes only!
           </span>
-        </div>
+      </div>
+      <div className="novac-modal">
 
-        <div className="novac-modal-header">
+        <div className="novac-modal-header" style={{ background: `${ config.customization?.background || '#EEEDFD' }`, color: `${ config.customization?.color || '#15142B' }`  }}>
           <div className="novac-header-content">
-            <h2 className="novac-title">Pay with Papyrus</h2>
-            <p className="novac-amount">{formatAmount(config.amount, config.currency)}</p>
-            <p className="novac-email">{config.email}</p>
+            <p className="novac-amount" style={{ color: `${ config.customization?.color || '#15142B' }` }}>{formatAmount(config.amount, config.currency)}</p>
+            <h2 className="novac-title" style={{ color: `${ config.customization?.color || '#15142B' }` }}>{ config.customization?.title || 'Payment Modal' }</h2>
+            <p className="novac-email" style={{ color: `${ config.customization?.color || '#15142B' }` }}>{config.email}</p>
           </div>
           <button
             className="novac-close-btn"
@@ -138,13 +138,11 @@ const CheckoutModal = ({ config, onClose }) => {
             />
           )}
         </div>
+      </div>
 
-        <div className="novac-footer">
-          <div className="novac-security-badge">
-            <span className="novac-lock-icon">🔒</span>
-            <span className="novac-security-text">Secured by Novac Payment</span>
-          </div>
-        </div>
+      <div className="novac-security-badge">
+        <span className="novac-lock-icon">🔒</span>
+        <span className="novac-security-text">Secured by Novac Payment</span>
       </div>
     </div>
   );

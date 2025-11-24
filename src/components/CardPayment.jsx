@@ -56,9 +56,9 @@ const CardPayment = ({ config, onSuccess, onError, isProcessing, setIsProcessing
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.cardholderName.trim()) {
-      newErrors.cardholderName = 'Cardholder name is required';
-    }
+    // if (!formData.cardholderName.trim()) {
+    //   newErrors.cardholderName = 'Cardholder name is required';
+    // }
 
     const cardNumber = formData.cardNumber.replace(/\s/g, '');
     if (!validateCardNumber(cardNumber)) {
@@ -153,25 +153,25 @@ const CardPayment = ({ config, onSuccess, onError, isProcessing, setIsProcessing
     )}
     {!showPin && !showOtp && (
         <form className="novac-payment-form" onSubmit={proceedToPinCollection}>
-          <div className="novac-form-group">
-            <label htmlFor="cardholderName" className="novac-label">
-              Cardholder Name
-            </label>
-            <input
-                type="text"
-                id="cardholderName"
-                name="cardholderName"
-                className={`novac-input ${errors.cardholderName ? 'error' : ''}`}
-                value={formData.cardholderName}
-                onChange={handleInputChange}
-                placeholder="John Doe"
-                disabled={isProcessing}
-                autoComplete="cc-name"
-            />
-            {errors.cardholderName && (
-                <span className="novac-error-text">{errors.cardholderName}</span>
-            )}
-          </div>
+          {/*<div className="novac-form-group">*/}
+          {/*  <label htmlFor="cardholderName" className="novac-label">*/}
+          {/*    Cardholder Name*/}
+          {/*  </label>*/}
+          {/*  <input*/}
+          {/*      type="text"*/}
+          {/*      id="cardholderName"*/}
+          {/*      name="cardholderName"*/}
+          {/*      className={`novac-input ${errors.cardholderName ? 'error' : ''}`}*/}
+          {/*      value={formData.cardholderName}*/}
+          {/*      onChange={handleInputChange}*/}
+          {/*      placeholder="John Doe"*/}
+          {/*      disabled={isProcessing}*/}
+          {/*      autoComplete="cc-name"*/}
+          {/*  />*/}
+          {/*  {errors.cardholderName && (*/}
+          {/*      <span className="novac-error-text">{errors.cardholderName}</span>*/}
+          {/*  )}*/}
+          {/*</div>*/}
 
           <div className="novac-form-group">
             <label htmlFor="cardNumber" className="novac-label">
@@ -246,7 +246,7 @@ const CardPayment = ({ config, onSuccess, onError, isProcessing, setIsProcessing
               className="novac-submit-btn"
               disabled={isProcessing}
           >
-            {isProcessing ? 'Processing...' : 'Pay Now'}
+            {isProcessing ? 'Processing...' : 'Pay'}
           </button>
         </form>
     )}

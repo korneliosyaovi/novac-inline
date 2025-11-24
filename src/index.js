@@ -54,7 +54,8 @@ class NovacInline {
       onSuccess: config.onSuccess || (() => {}),
       onError: config.onError || (() => {}),
       onClose: config.onClose || (() => {}),
-      paymentMethods: config.paymentMethods || ['card', 'bank_transfer', 'ussd']
+      paymentMethods: config.paymentMethods || ['card', 'bank_transfer', 'ussd'],
+      customization: config.customization || {}
     };
   }
 
