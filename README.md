@@ -323,7 +323,7 @@ npm test
 ```
 novac-inline/
 ├── src/
-│   ├── index.js                  # Main entry point
+│   ├── index.jsx                  # Main entry point
 │   ├── components/
 │   │   ├── CheckoutModal.jsx     # Main modal component
 │   │   ├── CardPayment.jsx       # Card payment form
