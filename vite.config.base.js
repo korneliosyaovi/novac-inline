@@ -1,5 +1,12 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import lingoCompiler from 'lingo.dev/compiler';
+
+const withLingo = lingoCompiler.vite({
+  sourceRoot: 'src',
+  targetLocales: ['es', 'fr', 'de'],
+  models: 'lingo.dev'
+});
 
 const fileName = format => {
   if (format === 'umd') return 'novac-inline.umd.js';
@@ -12,8 +19,8 @@ export const createBaseConfig = ({
   emptyOutDir = true,
   formats = ['es', 'umd', 'iife'],
   extraPlugins = []
-} = {}) =>
-  defineConfig({
+} = {}) => {
+  const baseConfig = defineConfig({
     plugins: [react(), ...extraPlugins],
     build: {
       outDir: 'dist',
@@ -37,3 +44,5 @@ export const createBaseConfig = ({
     }
   });
 
+  return withLingo(baseConfig);
+};

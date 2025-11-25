@@ -6,6 +6,7 @@ import { formatAmount } from '../utils/helpers';
 import {generateTransactionId, initiatePaymentRequest} from "../utils/api";
 import {Toaster} from "react-hot-toast";
 import ConfirmTransaction from "./ConfirmTransaction";
+import { LocaleSwitcher } from "lingo.dev/react/client";
 
 const CheckoutModal = ({ config, onClose }) => {
   const [activeTab, setActiveTab] = useState('card');
@@ -74,6 +75,7 @@ const CheckoutModal = ({ config, onClose }) => {
             You are currently in test environment, all transactions are for testing purposes only!
           </span>
       </div>}
+
       <div className="novac-modal">
 
         <div className="novac-modal-header" style={{ background: `${ config.customization?.background || '#EEEDFD' }`, color: `${ config.customization?.color || '#15142B' }`  }}>
@@ -82,6 +84,7 @@ const CheckoutModal = ({ config, onClose }) => {
             <h2 className="novac-title" style={{ color: `${ config.customization?.color || '#15142B' }` }}>{ config.customization?.title || 'Payment Modal' }</h2>
             <p className="novac-email" style={{ color: `${ config.customization?.color || '#15142B' }` }}>{config.email}</p>
           </div>
+          <LocaleSwitcher locales={["en", "es", "fr", "de"]} style={{ color: `${ config.customization?.color || '#15142B' }` }} />
           <button
             className="novac-close-btn"
             onClick={onClose}

@@ -1,0 +1,457 @@
+{
+  "version": 0.1,
+  "files": {
+    "components/BankTransfer.jsx": {
+      "scopes": {
+        "3/0/init/body/11/consequent/0/argument/3": {
+          "type": "element",
+          "hash": "f88d41273586a96d48bf89327bd3d49b",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Generating transfer details..."
+        },
+        "3/0/init/body/12/consequent/0/argument/1": {
+          "type": "element",
+          "hash": "3ada3bb1a528133434cf4305bf2b789c",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Unable to generate transfer details. Please try again."
+        },
+        "3/0/init/body/13/argument-aria-label": {
+          "type": "attribute",
+          "hash": "d9daef3a4a28ac0c699a89087eba0f53",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Bank transfer details"
+        },
+        "3/0/init/body/13/argument/1/1": {
+          "type": "element",
+          "hash": "2ad58416b77f1cd9230cb277a1a48a30",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Transfer to the bank details displayed below"
+        },
+        "3/0/init/body/13/argument/3/1/1/1": {
+          "type": "element",
+          "hash": "a0ae9c6ff98b57475cdce56f66066aa4",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Amount"
+        },
+        "3/0/init/body/13/argument/3/1/3/1": {
+          "type": "element",
+          "hash": "7168f108139ab4fb207bea8af4e82469",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Account Number"
+        },
+        "3/0/init/body/13/argument/3/1/3/3/3-title": {
+          "type": "attribute",
+          "hash": "61aebb5d37448085562219ecc7a81204",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Copy account number"
+        },
+        "3/0/init/body/13/argument/3/1/3/3/3/1": {
+          "type": "element",
+          "hash": "61aebb5d37448085562219ecc7a81204",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Copy account number"
+        },
+        "3/0/init/body/13/argument/3/1/5/1": {
+          "type": "element",
+          "hash": "cbb449f467876b4137a66df51486d1dc",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Bank"
+        },
+        "3/0/init/body/13/argument/3/1/7/1": {
+          "type": "element",
+          "hash": "12e45c9e4c0c1c73bfb65abbe64d4b74",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Beneficiary Name"
+        },
+        "3/0/init/body/13/argument/5": {
+          "type": "element",
+          "hash": "9423c24113fc4538cd49d463539752e6",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "The account number above expires after <element:strong><function:formatCountdown/></element:strong>"
+        },
+        "3/0/init/body/13/argument/7": {
+          "type": "element",
+          "hash": "781c91ca7c7f1a1b03f0f3a918f61152",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "I have made this payment!"
+        },
+        "3/0/init/body/13/argument/9": {
+          "type": "element",
+          "hash": "98d7e1db606f7f968f59674d689712ff",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Please pay the exact amount of {formattedAmount}."
+        }
+      }
+    },
+    "components/CardPayment.jsx": {
+      "scopes": {
+        "6/0/init/body/8/argument/3/expression/right/39/1": {
+          "type": "element",
+          "hash": "1c90a000e079a75c55c5fd0b656cf902",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Card Number"
+        },
+        "6/0/init/body/8/argument/3/expression/right/39/3/1": {
+          "type": "element",
+          "hash": "4a2f75e741ef8715025c3f376cd35ecd",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "💳"
+        },
+        "6/0/init/body/8/argument/3/expression/right/39/3/3-placeholder": {
+          "type": "attribute",
+          "hash": "3871b91802148d2e301878e5ecee62cf",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "0000 0000 0000 0000"
+        },
+        "6/0/init/body/8/argument/3/expression/right/39/5/expression/right": {
+          "type": "element",
+          "hash": "eacdc00aef8e21acc4a0a4cda2fa1e79",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Enter a valid card number"
+        },
+        "6/0/init/body/8/argument/3/expression/right/41/1/1": {
+          "type": "element",
+          "hash": "ee9d6a82c2a71324dd7042cd3d9953e2",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Expiry Date"
+        },
+        "6/0/init/body/8/argument/3/expression/right/41/1/3-placeholder": {
+          "type": "attribute",
+          "hash": "ebff6b100e92b9cb4df6b7b49887c6bd",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "MM/YY"
+        },
+        "6/0/init/body/8/argument/3/expression/right/41/3/1": {
+          "type": "element",
+          "hash": "c6c2250b364d99825015aff188031ff5",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "CVV"
+        },
+        "6/0/init/body/8/argument/3/expression/right/41/3/3-placeholder": {
+          "type": "attribute",
+          "hash": "550908e189c4623b2bb9d1aa1e6e2d27",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "123"
+        }
+      }
+    },
+    "components/CheckoutModal.jsx": {
+      "scopes": {
+        "8/0/init/body/12/argument/5/expression/right/1": {
+          "type": "element",
+          "hash": "fb326e93d79e7c406eb221bab79fc25e",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "⚠️"
+        },
+        "8/0/init/body/12/argument/5/expression/right/3": {
+          "type": "element",
+          "hash": "4c83ab4a17895a65c0a38b70f257a37b",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "You are currently in test environment, all transactions are for testing purposes only!"
+        },
+        "8/0/init/body/12/argument/7/1/3": {
+          "type": "element",
+          "hash": "6ad11f7fb51f461132aa7d579c852e31",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "×"
+        },
+        "8/0/init/body/12/argument/7/1/3-aria-label": {
+          "type": "attribute",
+          "hash": "2c2e22f8424a1031de89063bd0022e16",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Close"
+        },
+        "8/0/init/body/12/argument/9/1": {
+          "type": "element",
+          "hash": "bdf390c3ee498d74dcf3b9df6f4f0306",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "🔒"
+        },
+        "8/0/init/body/12/argument/9/3": {
+          "type": "element",
+          "hash": "27ad7edbe9b893f8701703a96fef14ed",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Secured by Novac Payment"
+        },
+        "9/0/init/body/12/argument/11/1": {
+          "type": "element",
+          "hash": "bdf390c3ee498d74dcf3b9df6f4f0306",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "🔒"
+        },
+        "9/0/init/body/12/argument/11/3": {
+          "type": "element",
+          "hash": "27ad7edbe9b893f8701703a96fef14ed",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Secured by Novac Payment"
+        },
+        "9/0/init/body/12/argument/5/expression/right/1": {
+          "type": "element",
+          "hash": "fb326e93d79e7c406eb221bab79fc25e",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "⚠️"
+        },
+        "9/0/init/body/12/argument/5/expression/right/3": {
+          "type": "element",
+          "hash": "4c83ab4a17895a65c0a38b70f257a37b",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "You are currently in test environment, all transactions are for testing purposes only!"
+        },
+        "9/0/init/body/12/argument/7/1/5": {
+          "type": "element",
+          "hash": "6ad11f7fb51f461132aa7d579c852e31",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "×"
+        },
+        "9/0/init/body/12/argument/7/1/5-aria-label": {
+          "type": "attribute",
+          "hash": "2c2e22f8424a1031de89063bd0022e16",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Close"
+        },
+        "9/0/init/body/12/argument/9/1": {
+          "type": "element",
+          "hash": "bdf390c3ee498d74dcf3b9df6f4f0306",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "🔒"
+        },
+        "9/0/init/body/12/argument/9/1/3": {
+          "type": "element",
+          "hash": "6ad11f7fb51f461132aa7d579c852e31",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "×"
+        },
+        "9/0/init/body/12/argument/9/1/3-aria-label": {
+          "type": "attribute",
+          "hash": "2c2e22f8424a1031de89063bd0022e16",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Close"
+        },
+        "9/0/init/body/12/argument/9/3": {
+          "type": "element",
+          "hash": "27ad7edbe9b893f8701703a96fef14ed",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Secured by Novac Payment"
+        }
+      }
+    },
+    "components/ConfirmTransaction.jsx": {
+      "scopes": {
+        "3/0/init/body/12/argument/7/expression/consequent/3/expression/alternate": {
+          "type": "element",
+          "hash": "1cc7457217a2fbd7c07440eee9058694",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "0 seconds"
+        },
+        "3/0/init/body/12/argument/9/expression/right": {
+          "type": "element",
+          "hash": "d96986d263161ea9eba02fcc72ee249f",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Try Again"
+        }
+      }
+    },
+    "components/Otp.jsx": {
+      "scopes": {
+        "2/0/init/body/6/argument/1/1": {
+          "type": "element",
+          "hash": "7f77215391246266fb0c289580d982a0",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Otp"
+        },
+        "2/0/init/body/6/argument/1/3-placeholder": {
+          "type": "attribute",
+          "hash": "febee8e9ab40b2fe5106d72675228d00",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "John Doe"
+        }
+      }
+    },
+    "components/Pin.jsx": {
+      "scopes": {
+        "1/0/init/body/11/argument/1/1": {
+          "type": "element",
+          "hash": "b5de12d52814b66c405c8fcf98734045",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Enter your 4 digit PIN to proceed"
+        },
+        "1/0/init/body/11/argument/1/7": {
+          "type": "element",
+          "hash": "7c91ef5f747eea9f77a9c4f23e19fb2e",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Submit"
+        }
+      }
+    },
+    "components/UssdPayment.jsx": {
+      "scopes": {
+        "3/0/init/body/14/consequent/0/argument/1": {
+          "type": "element",
+          "hash": "9bb41d47c46bd26416a3bb2254058209",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Please use this USSD code to complete your transaction"
+        },
+        "3/0/init/body/14/consequent/0/argument/3/3-title": {
+          "type": "attribute",
+          "hash": "1ca2db9c504608ccfec4a8cc2b5e8a98",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Copy USSD code"
+        },
+        "3/0/init/body/14/consequent/0/argument/3/3/1": {
+          "type": "element",
+          "hash": "1ca2db9c504608ccfec4a8cc2b5e8a98",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Copy USSD code"
+        },
+        "3/0/init/body/14/consequent/0/argument/5": {
+          "type": "element",
+          "hash": "4d38ffc7b78ff8c135e794e7213f934d",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "USSD expires after <function:formatCountdown/>"
+        },
+        "3/0/init/body/14/consequent/0/argument/7": {
+          "type": "element",
+          "hash": "c9b2fd218ffb0ddb18305107e40f17f5",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "I have made Payment"
+        },
+        "3/0/init/body/15/argument/1/1": {
+          "type": "element",
+          "hash": "f24cf953be924b0aee5b86de7147c0a4",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Choose your preferred bank for payment"
+        },
+        "3/0/init/body/15/argument/3/expression/alternate/alternate/alternate/1": {
+          "type": "element",
+          "hash": "4bbba9921fa537354e23b454a37723ee",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Select a bank"
+        },
+        "3/0/init/body/15/argument/3/expression/alternate/alternate/consequent/1": {
+          "type": "element",
+          "hash": "3452f8a6161f93806cfeddb8cd4975dc",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "No USSD banks available for this merchant."
+        },
+        "3/0/init/body/15/argument/3/expression/consequent/3": {
+          "type": "element",
+          "hash": "f114f2b81fa29eb3b23b0f9e27de07ca",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Loading banks..."
+        },
+        "3/0/init/body/15/argument/5/expression/right/3": {
+          "type": "element",
+          "hash": "52dc05fda606ec1faf03a1a0ee4f5d89",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Generating USSD code..."
+        }
+      }
+    }
+  }
+}

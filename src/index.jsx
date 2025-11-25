@@ -6,6 +6,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import CheckoutModal from './components/CheckoutModal';
+import { LingoProviderWrapper, loadDictionary } from "lingo.dev/react/client";
 import './styles/main.css';
 
 class Novac {
@@ -97,10 +98,12 @@ class Novac {
     // Render React component
     this.root = createRoot(this.modalRoot);
     this.root.render(
-      <CheckoutModal
-        config={this.config}
-        onClose={this.close.bind(this)}
-      />
+        <LingoProviderWrapper loadDictionary={(locale) => loadDictionary(locale)}>
+          <CheckoutModal
+              config={this.config}
+              onClose={this.close.bind(this)}
+          />
+        </LingoProviderWrapper>
     );
 
     // Prevent body scroll when modal is open

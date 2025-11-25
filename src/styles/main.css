@@ -946,3 +946,7 @@ select.novac-bank-select {
 .novac-ussd-code__expiry {
   text-align: center;
 }
+
+.novac-modal-header > select {
+  margin-right: 10px;
+}
