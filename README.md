@@ -121,56 +121,61 @@ Download `dist/novac-inline.js` and include it in your HTML:
 
 ```javascript
 const payment = new Novac({
-  publicKey: 'pk_test_xxxxxxxxxxxxx',
-  email: 'customer@example.com',
-  amount: 50000,
-  currency: 'NGN'
-});
+    publicKey: 'nc_testpk_akf34p2rjegw6fn4fkvw275u5lkb5dxrc3ni',
+    email: 'customer@example.com',
+    amount: 500,
+    currency: 'NGN',
+    customerName: 'John Doe',
+    customerPhone: '+2348012345678',
+    reference: 'TXN_' + Date.now(),
+    redirectUrl: 'https://example.com/payment-success',
+    // Optional: Specify which payment methods to show
+    paymentMethods: ['card', 'bank_transfer', 'ussd'],
 
-payment.open();
-```
+    // Optional: Add custom metadata
+    metadata: {
+        productId: '12345',
+        productName: 'Sample Product'
+    },
 
-### With Customer Details
+    customization: {
+        title: 'Complete Your Payment',
+        description: 'Pay ₦15,000 for Sample Product',
+        logo: 'https://placehold.co/600x400/orange/white?text=%22%22',
+        // background: '#d42409',
+        // color: '#ffffff'
+    },
 
-```javascript
-const payment = new Novac({
-  publicKey: 'pk_test_xxxxxxxxxxxxx',
-  email: 'customer@example.com',
-  amount: 50000,
-  currency: 'NGN',
-  customerName: 'John Doe',
-  customerPhone: '+2348012345678',
-  reference: 'ORDER_12345'
-});
+    // Callback when payment is successful
+    onSuccess: function (response) {
+        console.log('Payment successful:', response);
+        const resultDiv = document.getElementById('result');
+        resultDiv.className = 'result success';
+        resultDiv.innerHTML = `
+            <strong>Payment Successful!</strong><br>
+            Reference: ${response.reference}<br>
+            Status: ${response.status}
+          `;
 
-payment.open();
-```
+        // Here you would typically verify the payment on your backend
+        // and update your database
+    },
 
-### Custom Payment Methods
+    // Callback when payment fails
+    onError: function (error) {
+        console.error('Payment error:', error);
+        const resultDiv = document.getElementById('result');
+        resultDiv.className = 'result error';
+        resultDiv.innerHTML = `
+            <strong>Payment Failed</strong><br>
+            ${error.message}
+          `;
+    },
 
-```javascript
-const payment = new Novac({
-  publicKey: 'pk_test_xxxxxxxxxxxxx',
-  email: 'customer@example.com',
-  amount: 50000,
-  paymentMethods: ['card', 'ussd'] // Only show card and USSD
-});
-
-payment.open();
-```
-
-### With Metadata
-
-```javascript
-const payment = new Novac({
-  publicKey: 'pk_test_xxxxxxxxxxxxx',
-  email: 'customer@example.com',
-  amount: 50000,
-  metadata: {
-    orderId: '12345',
-    productName: 'Premium Subscription',
-    userId: '67890'
-  }
+    // Callback when modal is closed
+    onClose: function () {
+        console.log('Payment modal closed');
+    }
 });
 
 payment.open();
