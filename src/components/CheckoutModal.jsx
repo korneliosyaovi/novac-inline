@@ -27,6 +27,9 @@ const CheckoutModal = ({ config, onClose }) => {
 
   const handlePaymentSuccess = (response) => {
     setIsProcessing(false);
+    if (config.redirectUrl) {
+      handleRedirect()
+    }
     config.onSuccess(response);
     setTimeout(() => onClose(), 1500);
   };
@@ -42,6 +45,28 @@ const CheckoutModal = ({ config, onClose }) => {
     }
   };
 
+  const handleRedirect = () => {
+
+    if(!config.redirectUrl) return;
+
+    if (!config.redirectUrl.startsWith('https://') && config.redirectUrl.startsWith('http://')) {
+      config.redirectUrl = config.redirectUrl.replace('http://', 'https://');
+
+      const redirectOptions = new XMLHttpRequest();
+      redirectOptions.open('OPTIONS', config.redirectUrl, false);
+      redirectOptions.send();
+
+      if (redirectOptions.status !== 200) {
+        console.error('Invalid redirectUrl. Please check your configuration.');
+        return;
+      }
+    }
+
+    if (config.redirectUrl) {
+      window.location.href = config.redirectUrl;
+    }
+  }
+
   useEffect(async () => {
     const full_name = (config.customerName || '').split(' ');
     const initiateResponse = await initiatePaymentRequest({
@@ -49,6 +74,7 @@ const CheckoutModal = ({ config, onClose }) => {
       transactionReference: config.reference || generateTransactionId(),
       amount: config.amount,
       currency: config.currency,
+      redirectUrl: config.redirectUrl,
       checkoutCustomerData: {
         email: config.email,
         firstName: full_name[0] || 'Anonymous',

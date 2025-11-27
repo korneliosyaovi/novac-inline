@@ -188,7 +188,7 @@ const payment = new Novac({
   publicKey: 'pk_test_xxxxxxxxxxxxx',
   email: 'customer@example.com',
   amount: 50000,
-  
+  redirectUrl: 'https://example.com/payment-success',
   onSuccess: function(response) {
     // Payment successful - verify on your backend
     console.log('Transaction Reference:', response.reference);
